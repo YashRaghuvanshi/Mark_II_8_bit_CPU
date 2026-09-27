@@ -1,0 +1,37 @@
+# Vivado generated files
+*.jou
+*.log
+*.str
+*.pb
+*.wdb
+*.wcfg
+
+# Vivado generated directories
+*.cache/
+*.hw/
+*.ip_user_files/
+*.sim/
+*.runs/
+*.gen/
+*.xsim/
+xsim.dir/
+
+# Simulation generated files
+*.vcd
+*.wlf
+
+# Generated implementation files
+*.dcp
+*.bit
+*.bin
+*.ltx
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
