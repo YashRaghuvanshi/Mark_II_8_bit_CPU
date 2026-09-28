@@ -2,11 +2,11 @@
 
 module Register_File_tb;
 
-    reg clk_tb, rst_tb, write_enable_tb;
-    reg [1:0] write_address_tb, read_address1_tb, read_address2_tb;
-    reg [7:0] write_data_tb;
-
-    wire [7:0] read_data1_tb, read_data2_tb;
+    logic clk_tb, rst_tb, write_enable_tb;
+    logic [1:0] write_address_tb, read_address1_tb, read_address2_tb;
+    logic [7:0] write_data_tb;
+    
+    logic [7:0] read_data1_tb, read_data2_tb;
 
     Register_File uut(.clk(clk_tb), .rst(rst_tb), .write_enable(write_enable_tb), .write_address(write_address_tb),
                       .write_data(write_data_tb), .read_address1(read_address1_tb), .read_address2(read_address2_tb),
