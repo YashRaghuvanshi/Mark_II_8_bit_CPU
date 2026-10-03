@@ -8,39 +8,61 @@ module Instruction_Memory_tb;
     Instruction_Memory uut (.address(address_tb), .instruction(instruction_tb));
 
     initial begin
-        // Address 0
+        // ----------------------------------------------------------------------------------------
+        // Test 1: Address 0
         address_tb = 4'b0000;
-        #10;
+        #1;
+
         if (instruction_tb !== 13'b0000000000001)
-            $display("ERROR: Address 0");
+            $display("ERROR: Test 1 - Address 0");
         else
-            $display("PASS: Address 0");
+            $display("PASS: Test 1 - Address 0");
 
-        // Address 1
+        // ----------------------------------------------------------------------------------------
+        // Test 2: Address 1
         address_tb = 4'b0001;
-        #10;
+        #1;
+
         if (instruction_tb !== 13'b0000000000010)
-            $display("ERROR: Address 1");
+            $display("ERROR: Test 2 - Address 1");
         else
-            $display("PASS: Address 1");
+            $display("PASS: Test 2 - Address 1");
 
-        // Address 2
+        // ----------------------------------------------------------------------------------------
+        // Test 3: Address 2
         address_tb = 4'b0010;
-        #10;
+        #1;
+
         if (instruction_tb !== 13'b0000000000011)
-            $display("ERROR: Address 2");
+            $display("ERROR: Test 3 - Address 2");
         else
-            $display("PASS: Address 2");
+            $display("PASS: Test 3 - Address 2");
 
-        // Address 15
+        // ----------------------------------------------------------------------------------------
+        // Test 4: Address 15
         address_tb = 4'b1111;
-        #10;
-        if (instruction_tb !== 13'b1111111111111)
-            $display("ERROR: Address 15");
-        else
-            $display("PASS: Address 15");
+        #1;
 
+        if (instruction_tb !== 13'b1111111111111)
+            $display("ERROR: Test 4 - Address 15");
+        else
+            $display("PASS: Test 4 - Address 15");
+
+        // ----------------------------------------------------------------------------------------
+        // Test 5: Return to Address 0
+ 
+        // Verify that changing the address does not affect stored instructions.
+        address_tb = 4'b0000;
+        #1;
+
+        if (instruction_tb !== 13'b0000000000001)
+            $display("ERROR: Test 5 - Address 0 read after address change");
+        else
+            $display("PASS: Test 5 - Address 0 read after address change");
+        
+        $display("-------------------------------------------------");
         $display("Instruction Memory Initialisation test completed.");
+        $display("-------------------------------------------------");
         $finish;
         
     end

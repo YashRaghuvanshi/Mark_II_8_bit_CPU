@@ -23,18 +23,21 @@ module Data_Memory_tb;
         write_data_tb = 8'b0;
         
         // ----------------------------------------------------------------------------------------
-        // Test 1: Reset Memory
+        // Test 1: Read Initial Memory
+        //
+        // Memory contents are initialized through the .mem file.
+        // Reset does not clear the memory array.
         rst_tb = 1;
-        #10;
+        @(posedge clk_tb);
+        @(negedge clk_tb);
         rst_tb = 0;
-
         address_tb = 4'b0011;
         #1;
 
         if (read_data_tb !== 8'b0)
-            $display("ERROR: Test 1 - Memory did not reset to 0");
+            $display("ERROR: Test 1 - Initial memory value is not 0");
         else
-            $display("PASS: Test 1 - Memory reset");
+            $display("PASS: Test 1 - Initial memory read");
         
         // ----------------------------------------------------------------------------------------
         // Test 2: Write Data
@@ -42,7 +45,9 @@ module Data_Memory_tb;
         write_data_tb = 8'b10101010;
         write_enable_tb = 1;
 
-        #10;
+        @(posedge clk_tb);
+        @(negedge clk_tb);
+
         write_enable_tb = 0;
 
         if (read_data_tb !== 8'b10101010)
@@ -66,7 +71,9 @@ module Data_Memory_tb;
         write_data_tb = 8'b01100110;
         write_enable_tb = 1;
 
-        #10;
+        @(posedge clk_tb);
+        @(negedge clk_tb);
+
         write_enable_tb = 0;
 
         if (read_data_tb !== 8'b01100110)
@@ -86,32 +93,66 @@ module Data_Memory_tb;
 
         // ----------------------------------------------------------------------------------------
         // Test 6: Write Disabled
+        
+        // Write a known value to address 5.
         address_tb = 4'b0101;
-        write_data_tb = 8'b11111111;
+        write_data_tb = 8'b01010101;
+        write_enable_tb = 1;
+        
+        @(posedge clk_tb);
+        @(negedge clk_tb);
+        
         write_enable_tb = 0;
-
-        #10;
-
-        if (read_data_tb !== 8'b0)
+        
+        // Attempt to overwrite the same address with a different value.
+        write_data_tb = 8'b11111111;
+        
+        @(posedge clk_tb);
+        @(negedge clk_tb);
+        
+        if (read_data_tb !== 8'b01010101)
             $display("ERROR: Test 6 - Data changed with write disabled");
         else
             $display("PASS: Test 6 - Write disabled");
         
         // ----------------------------------------------------------------------------------------
-        // Test 7: Reset Clears Stored Data
-        rst_tb = 1;
-        #10;
-        rst_tb = 0;
+        // Test 7: Boundary Addresses
+        
+        // Verify the first and last memory locations.
+        
+        // Write address 0
+        address_tb = 4'b0000;
+        write_data_tb = 8'b11001100;
+        write_enable_tb = 1;
 
-        address_tb = 4'b0011;
-        #1;
+        @(posedge clk_tb);
+        @(negedge clk_tb);
 
-        if (read_data_tb !== 8'b0)
-            $display("ERROR: Test 7 - Reset did not clear memory");
+        write_enable_tb = 0;
+
+        if (read_data_tb !== 8'b11001100)
+            $display("ERROR: Test 7A - Address 0 was not written correctly");
         else
-            $display("PASS: Test 7 - Reset cleared memory");
+            $display("PASS: Test 7A - Address 0 written correctly");
 
-        $display("Data Memory test completed.");
+        // Write address 15
+        address_tb = 4'b1111;
+        write_data_tb = 8'b00110011;
+        write_enable_tb = 1;
+
+        @(posedge clk_tb);
+        @(negedge clk_tb);
+
+        write_enable_tb = 0;
+
+        if (read_data_tb !== 8'b00110011)
+            $display("ERROR: Test 7B - Address 15 was not written correctly");
+        else
+            $display("PASS: Test 7B - Address 15 written correctly");
+
+        $display("--------------------------------");
+        $display("   All Data Memory tests done");
+        $display("--------------------------------");
         $finish;
 
     end

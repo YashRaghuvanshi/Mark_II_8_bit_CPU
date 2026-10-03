@@ -15,5 +15,4 @@ module Program_Counter(
         else if (pc_enable)
             pc <= pc + 1'b1;
     end
-
 endmodule

@@ -39,7 +39,7 @@ module DIV_tb;
 
             // Wait for DUT to capture start
             @(posedge clk_tb);
-            #1;
+            @(negedge clk_tb);
             start_tb = 1'b0;
 
             wait(done_tb == 1'b1);
@@ -94,7 +94,7 @@ module DIV_tb;
             $display("FAIL: Division by zero handling");
 
         $display("--------------------------------");
-        $display("All division tests done");
+        $display("    All division tests done");
         $display("--------------------------------");
 
         $finish;
